@@ -40,3 +40,6 @@ out/
 .env
 .env.local
 *.log
+
+### IntelliJ run configs (may contain secrets) ###
+.run/

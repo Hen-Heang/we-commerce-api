@@ -69,24 +69,22 @@ public class BookmarkServiceImp extends BookmarkService {
 
     @Override
     public void deletedBookmarkById(Long productId) {
-        Long bookmarkId = 0L;
         UserEntity auth=(UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Integer id = auth.getId();
         BookMarkEntity bookMark = bookmarkRepository.findByProductIdAndUserId(productId,id);
-        bookmarkId = bookMark.getId();
-        if(bookmarkRepository.findById(bookmarkId).isEmpty()){
+        if(bookMark == null){
             throw new NotFoundExceptionHandler("Item Save is not found!");
         }
-        bookmarkRepository.deleteById(bookmarkId);
+        bookmarkRepository.deleteById(bookMark.getId());
     }
 
     @Override
     public List<ProductResponse> getAllBookMarkByTitle(String title,Integer userId) {
         List<ProductResponse> productResponses = new ArrayList<>();
-        if (bookmarkRepository.findByProduct_TitleContainingIgnoreCaseAndUserId(title,userId).isEmpty()){
-            throw new NotFoundExceptionHandler("No record to show!");
-        }
         List<BookMarkEntity> bookMarkEntities = bookmarkRepository.findByProduct_TitleContainingIgnoreCaseAndUserId(title,userId);
+        if (bookMarkEntities.isEmpty()){
+            return productResponses;
+        }
         for (BookMarkEntity bookMark : bookMarkEntities){
             productResponses.add(productServiceImp.SetDataToProductResponse(bookMark.getId(),bookMark.getProduct().getTitle()
                     ,bookMark.getProduct().getPrice(),bookMark.getProduct().getDiscountValues(),bookMark.getProduct().getDiscountType(),bookMark.getCreatedDate(),bookMark.getProduct().getPhoto(),bookMark.getProduct().getStatus(),true));
