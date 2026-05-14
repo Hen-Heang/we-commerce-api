@@ -1,0 +1,27 @@
+package com.example.wecommerce_api.util;
+
+//import com.example.wecommerce_api.entity.user.User;
+import com.example.wecommerce_api.entity.UserEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+
+public class AuthHelper {
+    private static Authentication getAuth(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static UserEntity getUser(){
+        return (UserEntity) getAuth().getPrincipal();
+    }
+
+    public static String getUsername(){
+        return getUser().getUsername();
+    }
+
+public static void reload(){
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.getAuthentication().setAuthenticated(false);
+    }
+}

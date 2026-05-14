@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse -Depth 4)",
+      "Bash(Select-Object FullName, Name)",
+      "Bash(Format-Table -AutoSize)",
+      "PowerShell(& \"C:\\\\Program Files\\\\PostgreSQL\\\\17\\\\bin\\\\psql.exe\" -U postgres -c \"CREATE DATABASE we_commerce;\" 2>&1)",
+      "Bash(Remove-Item C:\\\\Practice\\\\we-commerce-api\\\\we-commerce-api-main\\\\src\\\\main\\\\resources\\\\Datauplaod\\\\* *)",
+      "Bash(Get-ChildItem C:\\\\Practice\\\\we-commerce-api\\\\we-commerce-api-main\\\\src\\\\main\\\\resources\\\\Datauplaod *)"
+    ]
+  }
+}
