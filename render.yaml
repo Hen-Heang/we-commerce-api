@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: we-commerce-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore
+    plan: free
+    envVars:
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_EXPIRATION
+        value: "3153600000000"
+      - key: JWT_REFRESH_EXPIRATION
+        value: "31536000000000"
