@@ -49,11 +49,15 @@ public class BookmarkServiceImp extends BookmarkService {
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Post with ID " + productId + " not found"));
 
-        if(collectionRepository.findByUserIdAndName(userId,"All Post") == null){
-            throw new InternalServerExeptionHandler("Error Save product!");
+        CollectionEntity collection = collectionRepository.findByUserIdAndName(userId, "All Post");
+        if(collection == null){
+            collection = new CollectionEntity();
+            collection.setName("All Post");
+            collection.setUser(user);
+            collection.setCreateDate(LocalDateTime.now());
+            collectionRepository.save(collection);
         }
         if(bookmarkRepository.findByProductIdAndUserId(productId,userId) == null) {
-            CollectionEntity collection = collectionRepository.findByUserIdAndName(userId, "All Post");
             BookMarkEntity bookmarkEntity = new BookMarkEntity();
             bookmarkEntity.setCollection(collection);
             bookmarkEntity.setUser(user);
