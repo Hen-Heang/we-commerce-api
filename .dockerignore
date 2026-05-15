@@ -1,0 +1,41 @@
+# Speeds up Docker builds by excluding stuff Render shouldn't ship to the daemon.
+# Lower image size + faster context upload.
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.iml
+*.iws
+*.ipr
+.run
+
+# Gradle
+.gradle
+build
+out
+
+# Maven (if ever used)
+target
+.mvn
+
+# Local secrets
+.env
+.env.local
+*.log
+
+# Docs
+*.md
+HELP.md
+LICENSE
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+node_modules
