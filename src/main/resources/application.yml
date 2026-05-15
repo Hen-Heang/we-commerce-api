@@ -1,3 +1,7 @@
+server:
+  # Render assigns a PORT env var. Locally defaults to 8080.
+  port: ${PORT:8080}
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
