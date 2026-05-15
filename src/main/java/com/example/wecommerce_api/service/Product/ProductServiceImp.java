@@ -160,22 +160,25 @@ public class ProductServiceImp implements ProductService {
         if(productRequest.getPrice()==null||productRequest.getPrice()== 0 || productRequest.getPrice()< 0 || productRequest.getPrice() > 100000000000000.0 ){
             throw new FieldBlankExceptionHandler("Price is not correct!");
         }
-        if (productRequest.getDiscountValues() < 0 || productRequest.getDiscountValues() >= 100.0){
+        // Default missing optional fields so we don't NPE on auto-unbox.
+        Double discountValues = productRequest.getDiscountValues() != null ? productRequest.getDiscountValues() : 0.0;
+        Boolean discountType = productRequest.getDiscountType() != null ? productRequest.getDiscountType() : Boolean.FALSE;
+        if (discountValues < 0 || discountValues >= 100.0){
             throw new FieldBlankExceptionHandler("Discount is not correct!");
         }
 
-        if (productRequest.getPhoto().isEmpty() || productRequest.getPhoto().equals("string")){
+        if (productRequest.getPhoto() == null || productRequest.getPhoto().isEmpty()){
             throw new FieldBlankExceptionHandler("photo cannot blank!");
         }
         CategoryEntity category = categoryRepository.getByCategoryName(categoryName);
         if(userRepository.findById(id).isEmpty()){
             throw new NotFoundExceptionHandler("User not found");
         }
-        Double totalAmount = (double) 0;
-        if(productRequest.getDiscountType() == true){
-            totalAmount =productRequest.getPrice() - (productRequest.getPrice()*(productRequest.getDiscountValues()/100));
-        }else {
-            totalAmount = productRequest.getPrice() - productRequest.getDiscountValues();
+        Double totalAmount;
+        if (Boolean.TRUE.equals(discountType)){
+            totalAmount = productRequest.getPrice() - (productRequest.getPrice() * (discountValues / 100));
+        } else {
+            totalAmount = productRequest.getPrice() - discountValues;
         }
         UserEntity user = userRepository.getById(id);
         ProductEntity productEntity = new ProductEntity();
@@ -185,8 +188,8 @@ public class ProductServiceImp implements ProductService {
         productEntity.setDescription(productRequest.getDescription());
         productEntity.setPrice(productRequest.getPrice());
         productEntity.setStatus("Selling");
-        productEntity.setDiscountValues(productRequest.getDiscountValues());
-        productEntity.setDiscountType(productRequest.getDiscountType());
+        productEntity.setDiscountValues(discountValues);
+        productEntity.setDiscountType(discountType);
         productEntity.setCodition(productRequest.getCodition());
         productEntity.setBrand(productRequest.getBrand());
         productEntity.setModel(productRequest.getModel());
