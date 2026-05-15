@@ -1,99 +1,101 @@
+# We Commerce — Backend API
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <img src="http://8.219.139.67:6654/api/v1/files/view/44391c70-1793-4b87-9be5-7fa8aa4b2589.png" alt="Logo" width="180" height="180">
+> Spring Boot 3 / Java 21 / PostgreSQL / JWT — REST API for a multi-vendor e-commerce marketplace.
 
-  <h3 align="center">EasyCart</h3>
+**Frontend repo**: https://github.com/Hen-Heang/we-commerce-frontend
 
-  <p align="center">
-  EasyCart App is the platform in Cambodia was created by students of Korea Software HRD Center.
-    <br />
-    <br />
-    <a href="http://110.74.194.123:6969/swagger-ui/index.html#/">View Demo</a>
-  </p>
-</div>
+---
 
+## Quick start
 
+```powershell
+# 1. PostgreSQL must be running on localhost:5432
+psql -U postgres -c "CREATE DATABASE we_commerce;"
 
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#start">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#what-we-have-done">What we have done</a></li>
-  </ol>
-</details>
+# 2. Set required env vars (or use IntelliJ's run config at .run/)
+$env:DB_PASSWORD="123"
+$env:JWT_SECRET_KEY="404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
 
-
-## About The Project
-### Built With
-
-* [Spring Boot](https://spring.io/projects/spring-boot)
-* [Open API](https://springdoc.org/)
-* [Spring Security](https://spring.io/projects/spring-security)
-* [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-* [PostgreSQL](https://www.postgresql.org/)
-
-
-<!-- GETTING STARTED -->
-### Getting Started
-
-To get a local copy up and running follow these simple steps.
-
-
-
-### Installation
-
-1. Clone the repo
-   
-```sh
-   git clone  https://github.com/ksga-11th-generation-advance-course/we-commerce-api.git
-```
-2. Waiting for gradle build
-### Start
-
-1. Start the project
-   Go to file > Open > Choose folder of the cloned project 
-2. Run project by clicking start ▶️ button
-3. Open browser and type
-```sh
-   http://110.74.194.123:6969/swagger-ui/index.html#/
+# 3. Run
+.\gradlew.bat bootRun
+# → http://localhost:8080
 ```
 
-<!-- USAGE EXAMPLES -->
-### Usage
+Open Swagger UI: `http://localhost:8080/swagger-ui.html`
 
-EasyCart  is EasyCart is an e-commerce system that makes it easy for customers to buy and sell products.Additional screenshots, code examples, and demos work well in this space
-You may also link to more resources.
+---
 
-_For more examples, please refer to the [Demo](http://110.74.194.123:6969/swagger-ui/index.html#/)
+## What's in here
 
+- 11 REST controllers (auth, users, products, categories, bookmarks, collections, purchases, addresses, notifications, files, view counts)
+- 18 JPA entities, 16 repositories
+- JWT auth via `OncePerRequestFilter` + DB-tracked tokens (revoke-on-logout)
+- Spring Security with role-based access
+- Uniform response envelope: `{ payload, message, code, error }`
+- Auditing (`@EnableJpaAuditing`) for created/modified timestamps
+- CORS configured per-request to support the Next.js frontend
 
-<!-- ACKNOWLEDGEMENTS -->
-### What we have done
+---
 
-* [Auth Controller](http://110.74.194.123:6969/swagger-ui/index.html#/auth-controller)
-* [User Controller](http://110.74.194.123:6969/swagger-ui/index.html#/user-controller)
-* [Product Controller](http://110.74.194.123:6969/swagger-ui/index.html#/product-controller)
-* [Product_View_Count Controllerr](http://110.74.194.123:6969/swagger-ui/index.html#/product-view-count-controller)
-* [BookMark Controller](http://110.74.194.123:6969/swagger-ui/index.html#/bookmark-controller)
-* [Collection Controller](http://110.74.194.123:6969/swagger-ui/index.html#/collection-controller)
-* [Address Controller](http://110.74.194.123:6969/swagger-ui/index.html#/address-controller)
-* [Purchase-controller](http://110.74.194.123:6969/swagger-ui/index.html#/purchase-controller)
-* [Notification-controller](http://110.74.194.123:6969/swagger-ui/index.html#/notification-controller)
-* [Category_controller](http://110.74.194.123:6969/swagger-ui/index.html#/category-controller)
-* [File-controller](http://110.74.194.123:6969/swagger-ui/index.html#/file-controller)
+## Tech stack
+
+| Concern | Tool |
+|---|---|
+| Language | Java 21 |
+| Framework | Spring Boot 3.4 |
+| Security | Spring Security + jjwt 0.11 |
+| Persistence | Spring Data JPA + Hibernate 6.6 |
+| Database | PostgreSQL 16 |
+| Build | Gradle |
+| API docs | springdoc OpenAPI 2.7 |
+| Lombok, MapStruct, ModelMapper | DTO mapping helpers |
+
+---
+
+## Full documentation
+
+📖 See **[../we-commerce-frontend/PROJECT_GUIDE.md](https://github.com/Hen-Heang/we-commerce-frontend/blob/main/PROJECT_GUIDE.md)** for the complete architecture & API reference: endpoint tables, request lifecycle diagrams, auth flow, and end-to-end use cases.
+
+---
+
+## Environment
+
+Secrets are read from env vars (see `.env.example`). Never commit real values.
+
+```
+DB_URL=jdbc:postgresql://localhost:5432/we_commerce
+DB_USERNAME=postgres
+DB_PASSWORD=<your_local_password>
+JWT_SECRET_KEY=<64-char hex>
+JWT_EXPIRATION=3153600000000
+JWT_REFRESH_EXPIRATION=31536000000000
+```
+
+For IntelliJ, the `.run/WeCommerceApiApplication.run.xml` config (gitignored) sets these for local dev.
+
+---
+
+## Endpoint overview
+
+All routes are prefixed with `/api/v1`.
+
+| Group | Path | Auth |
+|---|---|---|
+| Auth | `/auth/register`, `/auth/loginPhoneNumber/{phone}`, `/auth/refresh-token` | public |
+| Users | `/user/userprofile`, `/user/edit`, `DELETE /user` | USER |
+| Products | `/item/all`, `/item/{id}`, `/item/popular`, `/item/title/{title}`, `/item/categoryName/{name}`, `/item/postProduct` | USER |
+| Categories | `/category/all` | USER |
+| Bookmarks | `/bookmark/saved`, `/bookmark/unsaved`, `/bookmark/allSaved/{title}` | USER |
+| Collections | `/collection/addCollection`, `/collection/allCollection`, `/collection/addBookMark/{id}`, `PUT/DELETE /collection/{id}` | USER |
+| Addresses | `/address/addAddressDelivery`, `/address/listAddressDelivery`, `/address/editAddressDelivery/{id}` | USER |
+| Purchases | `POST /purchase`, `/purchase/receipt/{id}` | USER |
+| Notifications | `/notification/*` | USER |
+| Files | `/api/v1/fileView/**` (public), upload routes (USER) | mixed |
+
+Full request/response shapes are in [PROJECT_GUIDE.md](https://github.com/Hen-Heang/we-commerce-frontend/blob/main/PROJECT_GUIDE.md).
+
+---
+
+## Built by
+
+[Hen Heang](https://github.com/Hen-Heang) — backend extended on a starter Spring Boot API to demonstrate JWT auth patterns, layered architecture, and a uniform response envelope.
