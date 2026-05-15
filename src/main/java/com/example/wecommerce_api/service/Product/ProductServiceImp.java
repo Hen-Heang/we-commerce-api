@@ -46,14 +46,30 @@ public class ProductServiceImp implements ProductService {
         this.purchaseRpository = purchaseRpository;
     }
     public ProductResponse SetDataToProductResponse(Long id, String title, Double price,Double discountValus, Boolean discountType, LocalDateTime createdDate, List<PhotoEntity> photo,String status,Boolean isSave){
-        Double totalAmount = (double) 0;
-        if(discountType == true){
-            totalAmount = price - (price*(discountValus/100));
-        }else {
-            totalAmount = price - discountValus;
+        return SetDataToProductResponse(id, title, price, discountValus, discountType, createdDate, photo, status, isSave, null, null);
+    }
+
+    /** Preferred overload: pass seller info so the frontend can show "by {sellerName}". */
+    public ProductResponse SetDataToProductResponse(Long id, String title, Double price,Double discountValus, Boolean discountType, LocalDateTime createdDate, List<PhotoEntity> photo,String status,Boolean isSave, Long sellerId, String sellerName){
+        Double safeDiscount = discountValus != null ? discountValus : 0.0;
+        Boolean safeType = discountType != null ? discountType : Boolean.FALSE;
+        Double totalAmount;
+        if (Boolean.TRUE.equals(safeType)) {
+            totalAmount = price - (price * (safeDiscount / 100));
+        } else {
+            totalAmount = price - safeDiscount;
         }
-        ProductResponse productResponse = new ProductResponse(id,title,price,status,isSave,createdDate,totalAmount,photo);
-        return productResponse;
+        return new ProductResponse(id, title, price, status, isSave, createdDate, totalAmount, photo, sellerId, sellerName);
+    }
+
+    /* Tiny helpers — read seller info safely from a product. */
+    private static Long sellerIdOf(ProductEntity p) {
+        return (p.getUser() != null && p.getUser().getId() != null)
+                ? p.getUser().getId().longValue()
+                : null;
+    }
+    private static String sellerNameOf(ProductEntity p) {
+        return p.getUser() != null ? p.getUser().getName() : null;
     }
 
     @Override
@@ -74,9 +90,9 @@ public class ProductServiceImp implements ProductService {
             if(product.getStatus().equals("Selling")) {
                 if(product.getIsHide() == false) {
                     if (bookMarkRepository.findByProductIdAndUserId(product.getId(), userId) != null) {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true, sellerIdOf(product), sellerNameOf(product)));
                     } else {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false, sellerIdOf(product), sellerNameOf(product)));
                     }
                 }
             }
@@ -113,9 +129,9 @@ public class ProductServiceImp implements ProductService {
             if (product.getStatus().equals("Selling")) {
                 if (product.getIsHide() == false) {
                     if (bookMarkRepository.findByProductIdAndUserId(product.getId(), userId) != null) {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true, sellerIdOf(product), sellerNameOf(product)));
                     } else {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false, sellerIdOf(product), sellerNameOf(product)));
                     }
                 }
             }
@@ -137,9 +153,9 @@ public class ProductServiceImp implements ProductService {
             if (product.getStatus().equals("Selling")){
             if(product.getIsHide() == false) {
                 if (bookMarkRepository.findByProductIdAndUserId(product.getId(), userId) != null) {
-                    productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true));
+                    productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true, sellerIdOf(product), sellerNameOf(product)));
                 } else {
-                    productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false));
+                    productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false, sellerIdOf(product), sellerNameOf(product)));
                 }
              }
             }
@@ -233,9 +249,9 @@ public class ProductServiceImp implements ProductService {
         for (ProductEntity product : products){
                 if (product.getIsHide() == false) {
                     if (bookMarkRepository.findByProductIdAndUserId(product.getId(), userId) != null) {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), true, sellerIdOf(product), sellerNameOf(product)));
                     } else {
-                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false));
+                        productResponses.add(SetDataToProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getDiscountValues(), product.getDiscountType(), product.getCreatedDate(), product.getPhoto(), product.getStatus(), false, sellerIdOf(product), sellerNameOf(product)));
                     }
             }
         }
