@@ -23,4 +23,19 @@ public class CategoryServiceImp implements CategoryService{
        List<CategoryEntity> categorys = categoryRepository.findAllByOrderById();
         return categorys;
     }
+
+    @Override
+    public CategoryEntity createCategory(String categoryName) {
+        if (categoryName == null || categoryName.isBlank()) {
+            throw new IllegalArgumentException("categoryName is required");
+        }
+        // Idempotent: return the existing row if a category with this name exists.
+        CategoryEntity existing = categoryRepository.getByCategoryName(categoryName.trim());
+        if (existing != null) {
+            return existing;
+        }
+        CategoryEntity entity = new CategoryEntity();
+        entity.setCategoryName(categoryName.trim());
+        return categoryRepository.save(entity);
+    }
 }

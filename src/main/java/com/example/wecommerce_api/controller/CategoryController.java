@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -25,6 +27,17 @@ public class CategoryController {
     public ResponseEntity<?> getAllCategory(){
         return ResponseEntity.ok(new ApiResponse<>(
                 categoryService.getAllCategory(),
+                "OK",
+                200,
+                false,
+                LocalDateTime.now()
+        ));
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createCategory(@RequestParam String categoryName){
+        return ResponseEntity.ok(new ApiResponse<>(
+                categoryService.createCategory(categoryName),
                 "OK",
                 200,
                 false,
