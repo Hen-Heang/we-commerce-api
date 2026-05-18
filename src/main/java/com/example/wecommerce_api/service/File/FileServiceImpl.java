@@ -3,6 +3,7 @@ package com.example.wecommerce_api.service.File;
 
 import com.example.wecommerce_api.entity.FileEntity;
 import com.example.wecommerce_api.repository.File.FileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+@RequiredArgsConstructor
 
 @Service
 public class FileServiceImpl implements FileService {
@@ -23,10 +25,6 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 //    private final Path root= Paths.get("src/main/resources/Datauplaod");
     private final Path root= Paths.get("/home/hrd123/easycartImage/");
-
-    public FileServiceImpl(FileRepository fileRepository) {
-        this.fileRepository = fileRepository;
-    }
     @Override
     public FileEntity InsertFile(FileEntity fileEntity) {
         return fileRepository.save(fileEntity);

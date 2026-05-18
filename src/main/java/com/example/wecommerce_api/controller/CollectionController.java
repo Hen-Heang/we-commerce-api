@@ -1,6 +1,5 @@
 package com.example.wecommerce_api.controller;
 
-import com.example.wecommerce_api.entity.CollectionEntity;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.response.ApiResponse;
 import com.example.wecommerce_api.service.Collection.CollectionService;
@@ -54,8 +53,8 @@ public class CollectionController {
         ));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> DeletCollection(@PathVariable("id") Long id)throws Exception{
-        collectionService.DateteCollection(id);
+    public ResponseEntity<?> deleteCollection(@PathVariable("id") Long id)throws Exception{
+        collectionService.deleteCollection(id);
         return ResponseEntity.ok(new ApiResponse<>(
                 "Deleted successfully!",
                 "OK",

@@ -5,7 +5,6 @@ import com.example.wecommerce_api.entity.DeviceTokenEntity;
 import com.example.wecommerce_api.entity.token.Token;
 import com.example.wecommerce_api.entity.token.TokenRepository;
 import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
-//import com.example.wecommerce_api.entity.BankEntity;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.enums.ResponseMessage;
 import com.example.wecommerce_api.exception.CustomExceptionSecurity;

@@ -13,12 +13,14 @@ import com.example.wecommerce_api.repository.Purchase.PurchaseRpository;
 import com.example.wecommerce_api.repository.Receipt.ReceiptRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import com.example.wecommerce_api.service.Notification.NotificationServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseServiceImp implements PurchaseService{
     private final PurchaseRpository purchaseRpository;
     private final UserRepository userRepository;
@@ -29,16 +31,7 @@ public class PurchaseServiceImp implements PurchaseService{
     private final NotificationServiceImp notificationServiceImp;
     private final Validation validation;
 
-    public PurchaseServiceImp(PurchaseRpository purchaseRpository, UserRepository userRepository, ProductRepository productRepository, AddressRepository addressRepository, ReceiptRepository receiptRepository, NotificationRepository notificationRepository, NotificationServiceImp notificationServiceImp, Validation validation) {
-        this.purchaseRpository = purchaseRpository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.addressRepository = addressRepository;
-        this.receiptRepository = receiptRepository;
-        this.notificationRepository = notificationRepository;
-        this.notificationServiceImp = notificationServiceImp;
-        this.validation = validation;
-    }
+
 
     @Override
     public ReceiptResponse addPurchase(PurchaseRequest purchaseRequest) {

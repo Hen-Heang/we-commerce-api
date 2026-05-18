@@ -8,16 +8,15 @@ import com.example.wecommerce_api.payload.Notification.NotificationResponse;
 import com.example.wecommerce_api.repository.Notification.NotificationRepository;
 import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+@RequiredArgsConstructor
 
 @Service
 public class NotificationServiceImp implements NotificationService{
@@ -26,11 +25,6 @@ public class NotificationServiceImp implements NotificationService{
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public NotificationServiceImp(NotificationRepository notificationRepository, UserRepository userRepository, ProductRepository productRepository) {
-        this.notificationRepository = notificationRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
     @Override
     public List<NotificationResponse> getNotification(Integer receiverId,Integer pageNumber,Integer pageSize) {
         UserEntity userReceiver = new UserEntity();

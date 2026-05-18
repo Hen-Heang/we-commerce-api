@@ -13,13 +13,14 @@ import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import com.example.wecommerce_api.service.Product.ProductServiceImp;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@RequiredArgsConstructor
 @Service
 public class BookmarkServiceImp extends BookmarkService {
     private final BookMarkRepository bookmarkRepository;
@@ -28,13 +29,6 @@ public class BookmarkServiceImp extends BookmarkService {
     private final CollectionRepository collectionRepository;
     private  final ProductServiceImp productServiceImp;
 
-    public BookmarkServiceImp(BookMarkRepository bookmarkRepository, UserRepository userRepository, ProductRepository productRepository, CollectionRepository collectionRepository, ProductServiceImp productServiceImp) {
-        this.bookmarkRepository = bookmarkRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.collectionRepository = collectionRepository;
-        this.productServiceImp = productServiceImp;
-    }
 
     @Override
     public void savedProductToBookmark(Integer userId, Long productId) {

@@ -14,6 +14,7 @@ import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.repository.ProductViewCount.ProductViewCountRepository;
 import com.example.wecommerce_api.repository.Purchase.PurchaseRpository;
 import com.example.wecommerce_api.repository.User.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+
 public class ProductServiceImp implements ProductService {
 
     private final CategoryRepository categoryRepository;
@@ -35,16 +38,6 @@ public class ProductServiceImp implements ProductService {
     private final BookMarkRepository bookMarkRepository;
     private final PurchaseRpository purchaseRpository;
 
-    public ProductServiceImp(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository, PhotoRepository photoRepository, ProductViewCountRepository productViewCountRepository, Validation validation, BookMarkRepository bookMarkRepository, PurchaseRpository purchaseRpository) {
-        this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
-        this.photoRepository = photoRepository;
-        this.productViewCountRepository = productViewCountRepository;
-        this.validation = validation;
-        this.bookMarkRepository = bookMarkRepository;
-        this.purchaseRpository = purchaseRpository;
-    }
     public ProductResponse SetDataToProductResponse(Long id, String title, Double price,Double discountValus, Boolean discountType, LocalDateTime createdDate, List<PhotoEntity> photo,String status,Boolean isSave){
         return SetDataToProductResponse(id, title, price, discountValus, discountType, createdDate, photo, status, isSave, null, null);
     }

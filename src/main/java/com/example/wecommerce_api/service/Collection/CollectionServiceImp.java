@@ -15,6 +15,7 @@ import com.example.wecommerce_api.repository.BookMark.BookMarkRepository;
 import com.example.wecommerce_api.repository.Collection.CollectionRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import com.example.wecommerce_api.service.Product.ProductServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,18 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+
 public class CollectionServiceImp implements CollectionService{
     private final CollectionRepository collectionRepository;
     private final UserRepository userRepository;
     private final BookMarkRepository bookMarkRepository;
     private final ProductServiceImp productServiceImp;
-
-    public CollectionServiceImp(CollectionRepository collectionRepository, UserRepository userRepository, BookMarkRepository bookMarkRepository, ProductServiceImp productServiceImp) {
-        this.collectionRepository = collectionRepository;
-        this.userRepository = userRepository;
-        this.bookMarkRepository = bookMarkRepository;
-        this.productServiceImp = productServiceImp;
-    }
 
 
     @Override
@@ -93,7 +89,7 @@ public class CollectionServiceImp implements CollectionService{
     }
 
     @Override
-    public void DateteCollection(Long id) throws Exception{
+    public void deleteCollection(Long id) throws Exception{
        try {
            if (id == 1) {
                throw new FieldEmptyExceptionHandler("This Collection cannot Deleted!");

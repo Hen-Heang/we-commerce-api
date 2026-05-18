@@ -96,6 +96,42 @@ Full request/response shapes are in [PROJECT_GUIDE.md](https://github.com/Hen-He
 
 ---
 
+## Spring Learning Path
+
+Personal roadmap to level up Spring skills — checked off as each topic is completed.
+
+### Level 1 — Must Know (Junior → Mid)
+- [x] Spring Boot REST API
+- [x] Spring Data JPA + Hibernate
+- [x] Spring Security + JWT (role-based access)
+- [ ] Spring Security — OAuth2 / refresh token flow (deeper)
+- [ ] Spring Validation — custom validators, global error handling
+- [ ] Spring Mail — email OTP, notifications
+- [ ] Spring Scheduling — `@Scheduled` cron jobs
+- [ ] Spring Profiles — `dev` / `staging` / `prod` configs
+
+### Level 2 — Competitive Edge (Mid level)
+- [ ] Spring Cache + Redis — query caching, session storage
+- [ ] Spring Actuator — health checks, metrics, monitoring
+- [ ] Spring Cloud Gateway — API Gateway for microservices
+- [ ] Spring Events — async internal communication
+- [ ] Spring Retry — resilience for external API calls
+
+### Level 3 — Senior / Architect
+- [ ] Microservices architecture — split monolith into services
+- [ ] Spring Cloud Config — centralized config management
+- [ ] Apache Kafka / RabbitMQ — event-driven messaging
+- [ ] Spring WebFlux — reactive programming for high-load systems
+- [ ] Docker + CI/CD — containerize and deploy pipelines
+
+### Supporting Skills (parallel track)
+- [ ] PostgreSQL advanced — indexes, explain analyze, transactions
+- [ ] Redis — caching patterns, pub/sub
+- [ ] Docker — containerize this project
+- [ ] System design basics — load balancer, caching, message queue
+
+---
+
 ## Built by
 
 [Hen Heang](https://github.com/Hen-Heang) — backend extended on a starter Spring Boot API to demonstrate JWT auth patterns, layered architecture, and a uniform response envelope.

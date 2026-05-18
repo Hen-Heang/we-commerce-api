@@ -9,22 +9,19 @@ import com.example.wecommerce_api.payload.Address.AddressRequest;
 import com.example.wecommerce_api.repository.Address.AddressRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdressServiceImp extends AdressService {
     private final AddressRepository adressRepository;
     private final UserRepository userRepository;
     private final Validation validation;
 
-    public AdressServiceImp(AddressRepository adressRepository, UserRepository userRepository, Validation validation) {
-        this.adressRepository = adressRepository;
-        this.userRepository = userRepository;
-        this.validation = validation;
-    }
 
     @Override
     public AddressEntity AddAddressDel(AddressRequest addressRequest) {

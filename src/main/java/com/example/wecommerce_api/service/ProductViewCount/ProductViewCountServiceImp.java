@@ -6,21 +6,19 @@ import com.example.wecommerce_api.entity.ProductViewCountEntity;
 import com.example.wecommerce_api.exception.exceptionValidateInput.Validation;
 import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.repository.ProductViewCount.ProductViewCountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
+
 public class ProductViewCountServiceImp implements ProductViewCountService{
     private final ProductViewCountRepository productViewCountRepository;
     private final ProductRepository productRepository;
     private final Validation validation;
     int count = 1;
-    public ProductViewCountServiceImp(ProductViewCountRepository productViewCountRepository, ProductRepository productRepository, Validation validation) {
-        this.productViewCountRepository = productViewCountRepository;
-        this.productRepository = productRepository;
-        this.validation = validation;
-    }
 
     @Override
     public ProductViewCountEntity CountView(Long productId) {

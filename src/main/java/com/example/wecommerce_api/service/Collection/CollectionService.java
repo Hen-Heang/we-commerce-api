@@ -10,7 +10,7 @@ public interface CollectionService {
     CollectionEntity CreateCollection(String collectionName, Integer userId) throws Exception;
     void addItem(List<Long> bookMarkId, Long id) throws Exception;
     CollectionEntity Update(Long id, String newCollectionName) throws Exception;
-    void DateteCollection(Long id) throws Exception;
+    void deleteCollection(Long id) throws Exception;
     List<CollectionResponse> getAllCollection(Integer userId) throws Exception;
     CollectionResponseDetail getCollectionById(Integer userId, Long id) throws Exception;
     List<CollectionResponse> getCollectionByName(Integer userId, String name) throws Exception;
