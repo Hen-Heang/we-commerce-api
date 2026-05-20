@@ -3,6 +3,7 @@ package com.example.wecommerce_api.controller;
 import com.example.wecommerce_api.entity.FileEntity;
 import com.example.wecommerce_api.payload.File.FileResponse;
 import com.example.wecommerce_api.service.File.FileService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fileView")
+@RequiredArgsConstructor
 public class FileController {
     private final FileService fileService;
 
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
 
     @PostMapping(value = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFiles(@RequestParam("files") List<MultipartFile> files) throws IOException {

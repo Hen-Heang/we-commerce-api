@@ -11,13 +11,13 @@ public enum ResponseMessage implements IResponseMessage {
     INCORRECT_PASSWORD("002", "Incorrect password!"),
     FORBIDDEN("403", "Forbidden"),
     UNAUTHORIZED("401", "UNAUTHORIZED"),
-    BADREQUEST("004", "BADREQUEST"),
+    REQUESTER("004", "REQUESTER"),
     INVALID_TOKEN_SIGNATURE("0004", "Invalid token signature"),
     INVALID_TOKEN("005", "Invalid token"),
     TOKEN_EXPIRED("006", "Token expired"),
     UNSUPPORTED_TOKEN("007", "Unsupported token"),
-    NOTAUTHORIZED("003","NOT YET AUTHORIZED!"),
-    CHECKPHONENUMBER("009","PHONE NUMBER HAVE ALREADY"),
+    AUTHORIZED("003","NOT YET AUTHORIZED!"),
+    CHECKPOINTING("009","PHONE NUMBER HAVE ALREADY"),
 
     ;
     private final String code;

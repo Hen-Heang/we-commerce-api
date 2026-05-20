@@ -1,7 +1,6 @@
 package com.example.wecommerce_api.service.Collection;
 
-import com.example.wecommerce_api.exception.constand.FieldBlankExceptionHandler;
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.*;
 import com.example.wecommerce_api.enums.ResponseMessage;
 import com.example.wecommerce_api.exception.BadRequestException;
@@ -35,9 +34,7 @@ public class CollectionServiceImp implements CollectionService{
     @Override
     public CollectionEntity CreateCollection(String collectionName,Integer userId) throws Exception{
         try {
-            if (userRepository.getById(userId) == null) {
-                throw new FieldEmptyExceptionHandler("User not found!");
-            }
+            userRepository.getById(userId);
             if(collectionRepository.findByUserIdAndName(userId,collectionName) == null) {
                 CollectionEntity collection = new CollectionEntity();
                 UserEntity user = userRepository.getById(userId);
@@ -46,7 +43,7 @@ public class CollectionServiceImp implements CollectionService{
                 collection.setName(collectionName);
                 return collectionRepository.save(collection);
             }else{
-                throw new FieldBlankExceptionHandler("Collection name cannot duplicate");
+                throw new FieldEmptyExceptionHandler("Collection name cannot duplicate");
             }
         }catch (BadRequestException e){
             throw new CustomExceptionSecurity(ResponseMessage.UNAUTHORIZED);

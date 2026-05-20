@@ -5,7 +5,7 @@ import com.example.wecommerce_api.payload.Address.AddressRequest;
 
 import java.util.List;
 
-public abstract class AdressService {
+public abstract class AddressService {
     public abstract AddressEntity AddAddressDel(AddressRequest request);
     public abstract List<AddressEntity> getAddressDelivery(Integer userId);
     public abstract String updateAddress(Long addressId, AddressRequest request);

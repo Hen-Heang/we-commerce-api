@@ -1,7 +1,6 @@
 package com.example.wecommerce_api.repository.Password;
 
 import com.example.wecommerce_api.entity.PasswordEntity;
-import com.example.wecommerce_api.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

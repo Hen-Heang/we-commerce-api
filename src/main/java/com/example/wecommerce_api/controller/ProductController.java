@@ -3,7 +3,6 @@ package com.example.wecommerce_api.controller;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.payload.Product.ProductRequest;
 import com.example.wecommerce_api.payload.TotalItem.TotalItem;
-import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.response.ApiResponse;
 import com.example.wecommerce_api.response.ProductResponse;
 import com.example.wecommerce_api.service.Product.ProductService;

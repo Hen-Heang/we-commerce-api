@@ -1,21 +1,6 @@
-package com.example.wecommerce_api.exception;//package com.example.wecommerce_api.exception;
-//
-//import kosign.wecommerce.util.BaseResponse;
-//import org.springframework.web.bind.annotation.ExceptionHandler;
-//import org.springframework.web.bind.annotation.RestControllerAdvice;
-//
-//@RestControllerAdvice
-//public class GlobalExceptionHandler {
-//    @ExceptionHandler(CustomException.class)
-//    public Object customerException(CustomException ex){
-//        return BaseResponse.builder()
-//                .message(ex.getMessage())
-//                .code(ex.getCause().getMessage())
-//                .isError(true)
-//                .build();
-//    }
-//}
+package com.example.wecommerce_api.exception;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,15 +13,16 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex , HttpHeaders headers, HttpStatusCode statusCode, WebRequest request){
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex , @NonNull HttpHeaders headers, HttpStatusCode statusCode, @NonNull WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status",statusCode.value());
-        body.put("error",ex.getFieldError().getDefaultMessage());
+        body.put("error", Objects.requireNonNull(ex.getFieldError()).getDefaultMessage());
         return new ResponseEntity<>(body,statusCode);
     }
 
@@ -89,7 +75,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // Handle exception BadRequest
     @ExceptionHandler(BadRequestException.class)
     ProblemDetail handleBadRequest(BadRequestException badRequestException){
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, badRequestException.getMessage());
-        return problemDetail;
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, badRequestException.getMessage());
     }
 }

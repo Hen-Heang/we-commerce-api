@@ -2,7 +2,6 @@ package com.example.wecommerce_api.controller;
 
 import com.example.wecommerce_api.response.ApiResponse;
 import com.example.wecommerce_api.service.ProductViewCount.ProductViewCountService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

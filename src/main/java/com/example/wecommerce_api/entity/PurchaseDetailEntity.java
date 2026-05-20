@@ -1,6 +1,5 @@
 package com.example.wecommerce_api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
@@ -30,7 +28,7 @@ public class PurchaseDetailEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
     @OneToOne(mappedBy = "purchase",cascade = CascadeType.ALL)
-    private RecieptEntity reciept;
+    private ReceiptEntity reciept;
     @OneToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;

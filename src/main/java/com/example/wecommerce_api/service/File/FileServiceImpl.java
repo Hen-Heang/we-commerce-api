@@ -26,8 +26,8 @@ public class FileServiceImpl implements FileService {
 //    private final Path root= Paths.get("src/main/resources/Datauplaod");
     private final Path root= Paths.get("/home/hrd123/easycartImage/");
     @Override
-    public FileEntity InsertFile(FileEntity fileEntity) {
-        return fileRepository.save(fileEntity);
+    public void InsertFile(FileEntity fileEntity) {
+        fileRepository.save(fileEntity);
     }
 
     @Override
@@ -55,7 +55,6 @@ public class FileServiceImpl implements FileService {
         FileEntity files = fileRepository.findByFileName(fileName);
 //        Path path=Paths.get("src/main/resources/Datauplaod/"+files.getFileName());
         Path path=Paths.get("/home/hrd123/easycartImage/"+files.getFileName());
-        Resource file=new ByteArrayResource(Files.readAllBytes(path));
-        return file;
+        return new ByteArrayResource(Files.readAllBytes(path));
     }
 }

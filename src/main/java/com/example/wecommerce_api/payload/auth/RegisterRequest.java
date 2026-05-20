@@ -19,5 +19,5 @@ public class RegisterRequest {
   private String photoProfile;
   private Role role;
   private String googleLink;
-  private String maplink;
+  private String mapLink;
 }

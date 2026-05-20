@@ -15,7 +15,7 @@ public abstract class UserService {
     public abstract void VerifyPass(String password, Integer id) throws Exception;
     public abstract void ConnectWebill(CredentialEntity credential);
     public abstract void DisConnect();
-    public abstract CredentialEntity getCredentails(Integer userId);
+    public abstract CredentialEntity getCredentials(Integer userId);
     public abstract void InsertDeviceToken(String deviceToken);
     public abstract DeviceTokenEntity getDeviceToken(Integer userId);
 }

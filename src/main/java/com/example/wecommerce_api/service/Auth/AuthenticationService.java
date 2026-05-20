@@ -31,21 +31,28 @@ public class AuthenticationService {
     private final ObjectMapper objectMapper;
 
     public BaseResponse register(RegisterRequest request) throws Exception {
+        if (request.getPhoneNumber() != null && userRepository.findByPhoneNumber(request.getPhoneNumber()) != null) {
+            throw new Exception("Phone number already registered: " + request.getPhoneNumber());
+        }
+        if (request.getEmail() != null && userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new Exception("Email already registered: " + request.getEmail());
+        }
         var user = UserEntity.builder()
                 .name(request.getUserName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhoneNumber())
-                .shopAdress(request.getAddress())
+                .shopAddress(request.getAddress())
                 .profilePhoto(request.getPhotoProfile())
                 .googleLink(request.getGoogleLink())
-                .maplink(request.getMaplink())
+                .maplink(request.getMapLink())
                 .role(request.getRole() != null ? request.getRole() : Role.USER)
                 .build();
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(savedUser);
         var refreshToken = jwtService.generateRefreshToken(savedUser);
         saveUserToken(savedUser, jwtToken);
+
         return BaseResponse.builder()
                 .payload(AuthenticationResponse.builder()
                         .accessToken(jwtToken)

@@ -13,6 +13,6 @@ public class PurchaseRequest {
     private Long productId;
     private Boolean paymentMethod;
     private String remark;
-    private String refernce;
+    private String reference;
     private String paidBy;
 }

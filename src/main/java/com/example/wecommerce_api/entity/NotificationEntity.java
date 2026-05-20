@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "notification_tb")
@@ -37,5 +36,5 @@ public class NotificationEntity {
     private LocalDateTime createdDate;
     @ManyToOne
     @JoinColumn(name = "reciept_id")
-    private RecieptEntity reciept;
+    private ReceiptEntity reciept;
 }

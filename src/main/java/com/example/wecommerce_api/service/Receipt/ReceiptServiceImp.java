@@ -1,8 +1,8 @@
 package com.example.wecommerce_api.service.Receipt;
 
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.ProductEntity;
-import com.example.wecommerce_api.entity.RecieptEntity;
+import com.example.wecommerce_api.entity.ReceiptEntity;
 import com.example.wecommerce_api.payload.Product.ProductResponse;
 import com.example.wecommerce_api.payload.Receipt.ReceiptResponse;
 import com.example.wecommerce_api.repository.Receipt.ReceiptRepository;
@@ -22,7 +22,7 @@ public class ReceiptServiceImp implements ReceiptService{
             throw new NotFoundExceptionHandler("No record");
         }
 
-        RecieptEntity receipt = receiptRepository.getById(receiptId);
+        ReceiptEntity receipt = receiptRepository.getById(receiptId);
         ProductEntity product = receipt.getPurchase().getProduct();
         ProductResponse productResponse = new ProductResponse(product.getId(), product.getTitle(), product.getPrice(), product.getStatus(),false,product.getCreatedDate(), product.getTotalAmount(),product.getPhoto());
         ReceiptResponse receiptResponse = new ReceiptResponse();

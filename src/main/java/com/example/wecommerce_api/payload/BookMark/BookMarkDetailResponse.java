@@ -20,7 +20,7 @@ public class BookMarkDetailResponse {
     private Double discountValues;
     private Boolean discountType;
     private LocalDateTime createdDate;
-    private String codition;
+    private String condition;
     private String brand;
     private String model;
     private String color;

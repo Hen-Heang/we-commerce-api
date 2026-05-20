@@ -1,6 +1,7 @@
 package com.example.wecommerce_api.config;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,7 @@ public class AppConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> repository.findByEmail(username)
+                .or(() -> Optional.ofNullable(repository.findByPhoneNumber(username)))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 

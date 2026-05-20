@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Data
 public class BaseResponse {
@@ -43,7 +41,4 @@ public class BaseResponse {
         return null;
     }
 
-    public Object getPayload() {
-        return payload;
-    }
 }

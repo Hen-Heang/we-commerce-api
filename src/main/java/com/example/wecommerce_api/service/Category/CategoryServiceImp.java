@@ -1,6 +1,6 @@
 package com.example.wecommerce_api.service.Category;
 
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.CategoryEntity;
 import com.example.wecommerce_api.repository.Category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,7 @@ public class CategoryServiceImp implements CategoryService{
         if (categoryRepository.findAllByOrderById().isEmpty()){
             throw new NotFoundExceptionHandler("No record!");
         }
-       List<CategoryEntity> categorys = categoryRepository.findAllByOrderById();
-        return categorys;
+        return categoryRepository.findAllByOrderById();
     }
 
     @Override

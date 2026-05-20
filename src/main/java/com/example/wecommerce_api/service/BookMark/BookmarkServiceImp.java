@@ -1,7 +1,6 @@
 package com.example.wecommerce_api.service.BookMark;
 
-import com.example.wecommerce_api.exception.constand.InternalServerExeptionHandler;
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.BookMarkEntity;
 import com.example.wecommerce_api.entity.CollectionEntity;
 import com.example.wecommerce_api.entity.ProductEntity;

@@ -1,6 +1,6 @@
 package com.example.wecommerce_api.service.Notification;
 
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.NotificationEntity;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.exception.FieldEmptyExceptionHandler;
@@ -23,11 +23,10 @@ public class NotificationServiceImp implements NotificationService{
     @Autowired
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
-    private final ProductRepository productRepository;
 
     @Override
     public List<NotificationResponse> getNotification(Integer receiverId,Integer pageNumber,Integer pageSize) {
-        UserEntity userReceiver = new UserEntity();
+        UserEntity userReceiver;
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         if (userRepository.findById(receiverId).isEmpty()){
             throw new FieldEmptyExceptionHandler("Receiver is not found!");

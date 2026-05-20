@@ -1,6 +1,6 @@
 package com.example.wecommerce_api.service.ProductViewCount;
 
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.ProductEntity;
 import com.example.wecommerce_api.entity.ProductViewCountEntity;
 import com.example.wecommerce_api.exception.exceptionValidateInput.Validation;
@@ -33,11 +33,8 @@ public class ProductViewCountServiceImp implements ProductViewCountService{
             productViewCount = productViewCountRepository.findByProductId(productId);
 
                 count = productViewCount.getCount() + 1;
-                productViewCount.setCount(count);
-                return productViewCountRepository.save(productViewCount);
-        }else{
-            productViewCount.setCount(count);
-            return productViewCountRepository.save(productViewCount);
         }
+        productViewCount.setCount(count);
+        return productViewCountRepository.save(productViewCount);
     }
 }

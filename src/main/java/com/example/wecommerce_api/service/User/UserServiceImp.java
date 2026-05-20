@@ -4,23 +4,19 @@ import com.example.wecommerce_api.entity.CredentialEntity;
 import com.example.wecommerce_api.entity.DeviceTokenEntity;
 import com.example.wecommerce_api.entity.token.Token;
 import com.example.wecommerce_api.entity.token.TokenRepository;
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.enums.ResponseMessage;
 import com.example.wecommerce_api.exception.CustomExceptionSecurity;
 import com.example.wecommerce_api.exception.exceptionValidateInput.Validation;
 import com.example.wecommerce_api.payload.UserInfo.UserInfoRequest;
-import com.example.wecommerce_api.repository.Collection.CollectionRepository;
 import com.example.wecommerce_api.repository.Credencials.CredencialRepository;
 import com.example.wecommerce_api.repository.DeviceToken.DeviceTokenRepository;
-import com.example.wecommerce_api.repository.Password.PasswordRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
-import com.example.wecommerce_api.service.Auth.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,23 +26,15 @@ import java.util.Optional;
 public class UserServiceImp extends UserService {
     private final UserRepository userRepository;
     private  final Validation validation;
-    private final AuthenticationService authenticationService;
-    private final PasswordRepository passwordRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final CollectionRepository collectionRepository;
     private final CredencialRepository credencialRepository;
     private final TokenRepository tokenRepository;
     private final DeviceTokenRepository deviceTokenRepository;
 
-    public UserServiceImp(UserRepository userRepository, Validation validation, AuthenticationService authenticationService, PasswordRepository passwordRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, CollectionRepository collectionRepository, CredencialRepository credencialRepository, TokenRepository tokenRepository, DeviceTokenRepository deviceTokenRepository) {
+    public UserServiceImp(UserRepository userRepository, Validation validation, AuthenticationManager authenticationManager, CredencialRepository credencialRepository, TokenRepository tokenRepository, DeviceTokenRepository deviceTokenRepository) {
         this.userRepository = userRepository;
         this.validation = validation;
-        this.authenticationService = authenticationService;
-        this.passwordRepository = passwordRepository;
-        this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.collectionRepository = collectionRepository;
         this.credencialRepository = credencialRepository;
         this.tokenRepository = tokenRepository;
         this.deviceTokenRepository = deviceTokenRepository;
@@ -65,7 +53,7 @@ public class UserServiceImp extends UserService {
             user.setPhoneNumber(request.getPhoneNumber());
             user.setProfilePhoto(request.getPhotoProfile());
             user.setMaplink(request.getMaplink());
-            user.setShopAdress(request.getAddress());
+            user.setShopAddress(request.getAddress());
             user.setStatus(true);
             userRepository.save(user);
             return "Updated successful!";
@@ -87,9 +75,7 @@ public class UserServiceImp extends UserService {
         }
         UserEntity user = userOptional.get();
         List<Token> tokens = user.getTokens();
-        for (Token token : tokens) {
-            tokenRepository.delete(token);
-        }
+        tokenRepository.deleteAll(tokens);
         userRepository.deleteById(userId);
     }
 
@@ -123,9 +109,7 @@ public class UserServiceImp extends UserService {
     public void ConnectWebill(CredentialEntity credential) {
         UserEntity auth=(UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Integer userId = auth.getId();
-        if(userRepository.getById(userId) == null){
-            throw new NotFoundExceptionHandler("User not found!");
-        }
+        userRepository.getById(userId);
         UserEntity user = userRepository.getById(userId);
         if(credencialRepository.findByUserId(userId) == null){
             CredentialEntity credentialEntity = new CredentialEntity();
@@ -147,14 +131,14 @@ public class UserServiceImp extends UserService {
         UserEntity auth=(UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Integer userId = auth.getId();
         if (credencialRepository.findByUserId(userId) == null){
-          throw new NotFoundExceptionHandler("cannot deconnect!");
+          throw new NotFoundExceptionHandler("cannot reconnect!");
         }
         CredentialEntity credential = credencialRepository.findByUserId(userId);
         credencialRepository.deleteById(credential.getId());
     }
 
     @Override
-    public CredentialEntity getCredentails(Integer userId) {
+    public CredentialEntity getCredentials(Integer userId) {
         if (credencialRepository.findByUserId(userId) == null){
             throw new NotFoundExceptionHandler("Not found!");
         }

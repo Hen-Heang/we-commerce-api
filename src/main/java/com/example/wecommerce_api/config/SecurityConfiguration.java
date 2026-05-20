@@ -1,7 +1,6 @@
 package com.example.wecommerce_api.config;
 
 import com.example.wecommerce_api.enums.ResponseMessage;
-import com.example.wecommerce_api.payload.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

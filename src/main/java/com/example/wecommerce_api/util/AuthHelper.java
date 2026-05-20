@@ -1,6 +1,5 @@
 package com.example.wecommerce_api.util;
 
-//import com.example.wecommerce_api.entity.user.User;
 import com.example.wecommerce_api.entity.UserEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

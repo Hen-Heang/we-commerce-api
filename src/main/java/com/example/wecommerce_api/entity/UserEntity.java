@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,11 +29,11 @@ public class UserEntity implements UserDetails{
     private Integer id;
     @Column(name = "name")
     private String name;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
     @Column(name = "profile_photo")
     private String profilePhoto;
@@ -48,7 +47,7 @@ public class UserEntity implements UserDetails{
     @Column(name = "created_date",columnDefinition = "timestamp default now()")
     private LocalDateTime createDate;
     @Column(name = "address")
-    private String shopAdress;
+    private String shopAddress;
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private Role role;
@@ -112,7 +111,7 @@ public class UserEntity implements UserDetails{
     @Override
     @JsonIgnore
     public String getUsername() {
-        return email;
+        return email != null ? email : phoneNumber;
     }
 
     @Override

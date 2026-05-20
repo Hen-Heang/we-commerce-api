@@ -1,12 +1,11 @@
 package com.example.wecommerce_api.controller;
 
 import com.example.wecommerce_api.entity.CredentialEntity;
-import com.example.wecommerce_api.entity.DeviceTokenEntity;
 import com.example.wecommerce_api.entity.UserEntity;
 import com.example.wecommerce_api.payload.UserInfo.UserInfoRequest;
 import com.example.wecommerce_api.response.ApiResponse;
 import com.example.wecommerce_api.service.User.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +14,10 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PutMapping("edit")
     public ResponseEntity<?> EditUser(@RequestBody UserInfoRequest request){
@@ -97,7 +93,7 @@ public class UserController {
     @GetMapping("/credentails/{userId}")
     public ResponseEntity<?> GetCredentail(@PathVariable("userId") Integer userId){
         return ResponseEntity.ok(new ApiResponse<>(
-                userService.getCredentails(userId),
+                userService.getCredentials(userId),
                 "OK",
                 200,
                 false,

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @Service
 public interface FileService {
-    FileEntity InsertFile(FileEntity fileEntity);
+    void InsertFile(FileEntity fileEntity);
     String Uplaodfile(MultipartFile file) throws IOException;
     Resource getFile(String fileName) throws IOException;
 }

@@ -74,15 +74,6 @@ public class GlobalExceptionHandlerSecurity {
                 .build();
     }
 
-//    @ExceptionHandler(Throwable.class)
-//    public BaseResponse globalExceptionHandler(Throwable ex) {
-//        return BaseResponse.builder()
-//                .message(ex.getCause().getMessage())
-//                .code("500")
-//                .isError(true)
-//                .build();
-//    }
-
     //Json Validation
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

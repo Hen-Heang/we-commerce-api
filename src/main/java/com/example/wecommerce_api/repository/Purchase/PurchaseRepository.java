@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PurchaseRpository extends JpaRepository<PurchaseDetailEntity,Long> {
+public interface PurchaseRepository extends JpaRepository<PurchaseDetailEntity,Long> {
    List<PurchaseDetailEntity> findByUserIdOrderByCreatedDateDesc(Integer userId, PageRequest pageRequest);
    List<PurchaseDetailEntity> getByUserId(Integer userId);
    List<PurchaseDetailEntity> findAllByUserId(Integer userId);

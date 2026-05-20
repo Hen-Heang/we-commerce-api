@@ -1,6 +1,6 @@
 package com.example.wecommerce_api.exception.exceptionValidateInput;
 
-import com.example.wecommerce_api.exception.constand.FieldBlankExceptionHandler;
+import com.example.wecommerce_api.exception.FieldEmptyExceptionHandler;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,24 +14,24 @@ public class Validation {
         Pattern phoneNumberPattern=Pattern.compile(pNumber);
         Matcher phoneNumberMatcher=phoneNumberPattern.matcher(phoneNumber);
         if(!phoneNumberMatcher.matches()){
-            throw new FieldBlankExceptionHandler("Phone number must be start with 0 and not allow to input character, special character or more than 11 digits. ");
+            throw new FieldEmptyExceptionHandler("Phone number must be start with 0 and not allow to input character, special character or more than 11 digits. ");
         }
     }
 
     public void ValidationDate(String inputDate) {
-        Integer dayEarchMonth;
+        int dayEarchMonth;
         String monthWithString=null;
-        String test = "^\\d+\\-\\d+\\-\\d+$";
+        String test = "^\\d+-\\d+-\\d+$";
         Pattern pattern1 = Pattern.compile(test);
         Matcher matcher1 = pattern1.matcher(inputDate);
         if (!matcher1.matches()) {
-            throw new FieldBlankExceptionHandler(("Date of birth is not correct.Example yyyy-mm-dd"));
+            throw new FieldEmptyExceptionHandler(("Date of birth is not correct.Example yyyy-mm-dd"));
         }
         String[] parts = inputDate.split("-");
-        Integer day = Integer.parseInt(parts[2]);
-        Integer month = Integer.parseInt(parts[1]);
-        Integer year = Integer.parseInt(parts[0]);
-        Integer lengthofyear = year.toString().length();
+        int day = Integer.parseInt(parts[2]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[0]);
+        int lengthofyear = Integer.toString(year).length();
 
         if(month==1){
             monthWithString="January";
@@ -59,14 +59,14 @@ public class Validation {
             monthWithString="December";
         }
 
-        Integer verifydate = year % 4;
+        int verifydate = year % 4;
         if (verifydate == 0) {
             if (month == 2 && (day > 29 || day <= 0)) {
-                throw new FieldBlankExceptionHandler(("Day is not correct, because February, " + year + ", has only 29 days.Example format yyyy-mm-dd"));
+                throw new FieldEmptyExceptionHandler(("Day is not correct, because February, " + year + ", has only 29 days.Example format yyyy-mm-dd"));
             }
         } else {
             if (month == 2 && (day > 28 || day <= 0)) {
-                throw new FieldBlankExceptionHandler(("Day is not correct, because February, " + year + ", has only 28 days.Example format yyyy-mm-dd"));
+                throw new FieldEmptyExceptionHandler(("Day is not correct, because February, " + year + ", has only 28 days.Example format yyyy-mm-dd"));
             }
         }
 
@@ -74,12 +74,12 @@ public class Validation {
             dayEarchMonth = month % 2;
             if (dayEarchMonth == 0) {
                 if (day <= 0 || day > 30) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", hss only 30 days.Example format yyyy-mm-dd"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", hss only 30 days.Example format yyyy-mm-dd"));
                 }
             }
             else {
                 if (day <= 0 || day > 31) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days.Example format yyyy-mm-dd"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days.Example format yyyy-mm-dd"));
                 }
             }
         }
@@ -87,48 +87,48 @@ public class Validation {
                 dayEarchMonth = month % 2;
                 if (dayEarchMonth == 0) {
                     if (day <= 0 || day > 31) {
-                        throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days.Example format yyyy-mm-dd"));
+                        throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days.Example format yyyy-mm-dd"));
                     }
                 } else {
                     if (day <= 0 || day > 30) {
-                        throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 30 days.Example format yyyy-mm-dd"));
+                        throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 30 days.Example format yyyy-mm-dd"));
                     }
                 }
             }
             if (month >= 13 || month <= 0) {
-                throw new FieldBlankExceptionHandler(("Month is not correct,because month of year have only 12 month so can input less then 13 and more then 0.Example format yyyy-mm-dd"));
+                throw new FieldEmptyExceptionHandler(("Month is not correct,because month of year have only 12 month so can input less then 13 and more then 0.Example format yyyy-mm-dd"));
             }
             if (lengthofyear >= 5) {
-                throw new FieldBlankExceptionHandler(("Year is not correct,because allow input only less then 5 digit."));
+                throw new FieldEmptyExceptionHandler(("Year is not correct,because allow input only less then 5 digit."));
             }
 //            String date = "(^0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4}$)";
-            String date = "^\\d{4}\\-(0?[1-9]|1[012])\\-(0?[1-9]|[12][0-9]|3[01])$";
+            String date = "^\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$";
             Pattern pattern = Pattern.compile(date);
             Matcher matcher = pattern.matcher(inputDate);
             if (!matcher.matches()) {
-                throw new FieldBlankExceptionHandler(("Date of birth is not correct.Example yyy-mm-dd"));
+                throw new FieldEmptyExceptionHandler(("Date of birth is not correct.Example yyy-mm-dd"));
             }
 
         LocalDate dateFromInput = LocalDate.of(year, month, day);
         LocalDate currentDate=LocalDate.now();
-        if(dateFromInput.compareTo(currentDate)>=0){
-            throw new FieldBlankExceptionHandler(("Not allow to input the current date or future date."));
+        if(!dateFromInput.isBefore(currentDate)){
+            throw new FieldEmptyExceptionHandler(("Not allow to input the current date or future date."));
         }
         }
     public void ValidationDatePost(String inputDate){
         String monthWithString=null;
-        Integer dayEarchMonth;
-        String test="^\\d+\\-\\d+\\-\\d+$";
+        int dayEarchMonth;
+        String test= "^\\d+-\\d+-\\d+$";
         Pattern pattern1 = Pattern.compile(test);
         Matcher matcher1 = pattern1.matcher(inputDate);
         if(!matcher1.matches()){
-            throw new FieldBlankExceptionHandler(("Date should be yyyy-mm-dd. Example: 2023-06-24"));
+            throw new FieldEmptyExceptionHandler(("Date should be yyyy-mm-dd. Example: 2023-06-24"));
         }
         String[] parts = inputDate.split("-");
-        Integer day=Integer.parseInt(parts[2]);
-        Integer month=Integer.parseInt(parts[1]);
-        Integer year= Integer.parseInt(parts[0]);
-        Integer lengthofyear=year.toString().length();
+        int day=Integer.parseInt(parts[2]);
+        int month=Integer.parseInt(parts[1]);
+        int year= Integer.parseInt(parts[0]);
+        int lengthofyear= Integer.toString(year).length();
 
         if(month==1){
             monthWithString="January";
@@ -157,29 +157,29 @@ public class Validation {
         }
 
         if(parts[2].length()!=2 || parts[1].length()!=2){
-            throw new FieldBlankExceptionHandler(("Date is not correct.Example yyyy-mm-dd"));
+            throw new FieldEmptyExceptionHandler(("Date is not correct.Example yyyy-mm-dd"));
         }
 
-        Integer verifydate = year % 4;
+        int verifydate = year % 4;
         if (verifydate == 0) {
             if (month == 2 && (day > 29 || day <= 0)) {
-                throw new FieldBlankExceptionHandler(("Day is not correct, because February, " + year + ", has only 29 days."));
+                throw new FieldEmptyExceptionHandler(("Day is not correct, because February, " + year + ", has only 29 days."));
             }
         } else {
             if (month == 2 && (day > 28 || day <= 0)) {
-                throw new FieldBlankExceptionHandler(("Day is not correct, because February, " + year + ", has only 28 days."));
+                throw new FieldEmptyExceptionHandler(("Day is not correct, because February, " + year + ", has only 28 days."));
             }
         }
         if (month <=7 && month > 0) {
             dayEarchMonth = month % 2;
             if (dayEarchMonth == 0) {
                 if (day <= 0 || day > 30) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", hss only 30 days"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", hss only 30 days"));
                 }
             }
             else {
                 if (day <= 0 || day > 31) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days"));
                 }
             }
         }
@@ -187,34 +187,34 @@ public class Validation {
             dayEarchMonth = month % 2;
             if (dayEarchMonth == 0) {
                 if (day <= 0 || day > 31) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 31 days"));
                 }
             } else {
                 if (day <= 0 || day > 30) {
-                    throw new FieldBlankExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 30 days"));
+                    throw new FieldEmptyExceptionHandler(("Day is not correct, because "+monthWithString+", "+year+", has only 30 days"));
                 }
             }
         }
         if(month>=13||month<=0){
-            throw new FieldBlankExceptionHandler(("Month is not correct,because month of year have only 12 month so can input less then 13 and more then 0"));
+            throw new FieldEmptyExceptionHandler(("Month is not correct,because month of year have only 12 month so can input less then 13 and more then 0"));
         }
         if(lengthofyear>=5){
-            throw new FieldBlankExceptionHandler(("Year is not correct,because allow input only less then 5 digit."));
+            throw new FieldEmptyExceptionHandler(("Year is not correct,because allow input only less then 5 digit."));
         }
-        String date="^\\d{4}\\-(0?[1-9]|1[012])\\-(0?[1-9]|[12][0-9]|3[01])$";
+        String date= "^\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$";
         Pattern pattern = Pattern.compile(date);
         Matcher matcher = pattern.matcher(inputDate);
         if(!matcher.matches()){
-            throw new FieldBlankExceptionHandler(("Date is not correct.Example yyyy-mm-dd"));
+            throw new FieldEmptyExceptionHandler(("Date is not correct.Example yyyy-mm-dd"));
         }
     }
 
     public void ValidationEmail(String inputEmail){
-        String email =  "^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$";
+        String email = "^[(a-zA-Z-0-9_+.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$";
         Pattern pattern1 = Pattern.compile(email);
         Matcher matcher1 = pattern1.matcher(inputEmail);
         if (!matcher1.matches()){
-            throw new FieldBlankExceptionHandler(("Email is not correct.Example: example@gmail.com"));
+            throw new FieldEmptyExceptionHandler(("Email is not correct.Example: example@gmail.com"));
         }
     }
 
@@ -223,7 +223,7 @@ public class Validation {
         Pattern pattern2=Pattern.compile(password);
         Matcher matcher2=pattern2.matcher(inputPassword);
         if (!matcher2.matches()){
-            throw new FieldBlankExceptionHandler(("Password must be more then 8 digit with characters, number and special characters!"));
+            throw new FieldEmptyExceptionHandler(("Password must be more then 8 digit with characters, number and special characters!"));
         }
     }
     public void ValidationInputOnlyText(String inputText,String feil){
@@ -231,7 +231,7 @@ public class Validation {
         Pattern pattern2=Pattern.compile(text);
         Matcher matcher2=pattern2.matcher(inputText);
         if (!matcher2.matches()||!(inputText.equals("Male")||inputText.equals("Female"))){
-            throw new FieldBlankExceptionHandler((feil+"is can not allow input with special character or number, Allow input only Female and Male"));
+            throw new FieldEmptyExceptionHandler((feil+"is can not allow input with special character or number, Allow input only Female and Male"));
         }
     }
     public void ValidationInputUserName(String inputUserName){
@@ -239,7 +239,7 @@ public class Validation {
         Pattern pattern3=Pattern.compile(username1);
         Matcher matcher3=pattern3.matcher(inputUserName);
         if (!matcher3.matches()){
-            throw new FieldBlankExceptionHandler(("Username allow input only text."));
+            throw new FieldEmptyExceptionHandler(("Username allow input only text."));
         }
     }
     public void ValidationInputConfirmPincode(String Inputpincode){
@@ -247,7 +247,7 @@ public class Validation {
         Pattern pattern2=Pattern.compile(pincode);
         Matcher matcher2=pattern2.matcher(Inputpincode);
         if (!matcher2.matches()){
-            throw new FieldBlankExceptionHandler(("Pincode must be input only number 6 digit."));
+            throw new FieldEmptyExceptionHandler(("Pincode must be input only number 6 digit."));
         }
     }
     public void ValidateInputNumber(String InputNumber){
@@ -255,7 +255,7 @@ public class Validation {
         Pattern pattern2=Pattern.compile(number);
         Matcher matcher2=pattern2.matcher(InputNumber);
         if (!matcher2.matches()){
-            throw new FieldBlankExceptionHandler(("Category_id allow input with number only!"));
+            throw new FieldEmptyExceptionHandler(("Category_id allow input with number only!"));
         }
     }
 }

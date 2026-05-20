@@ -1,7 +1,7 @@
 package com.example.wecommerce_api.service.Product;
 
-import com.example.wecommerce_api.exception.constand.FieldBlankExceptionHandler;
-import com.example.wecommerce_api.exception.constand.NotFoundExceptionHandler;
+import com.example.wecommerce_api.exception.FieldEmptyExceptionHandler;
+import com.example.wecommerce_api.exception.NotFoundExceptionHandler;
 import com.example.wecommerce_api.entity.*;
 import com.example.wecommerce_api.exception.FieldEmptyExceptionHandler;
 import com.example.wecommerce_api.exception.exceptionValidateInput.Validation;
@@ -12,7 +12,7 @@ import com.example.wecommerce_api.repository.Category.CategoryRepository;
 import com.example.wecommerce_api.repository.Photo.PhotoRepository;
 import com.example.wecommerce_api.repository.Product.ProductRepository;
 import com.example.wecommerce_api.repository.ProductViewCount.ProductViewCountRepository;
-import com.example.wecommerce_api.repository.Purchase.PurchaseRpository;
+import com.example.wecommerce_api.repository.Purchase.PurchaseRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -34,9 +34,8 @@ public class ProductServiceImp implements ProductService {
     private final UserRepository userRepository;
     private final PhotoRepository photoRepository;
     private final ProductViewCountRepository productViewCountRepository;
-    private final Validation validation;
     private final BookMarkRepository bookMarkRepository;
-    private final PurchaseRpository purchaseRpository;
+    private final PurchaseRepository purchaseRepository;
 
     public ProductResponse SetDataToProductResponse(Long id, String title, Double price,Double discountValus, Boolean discountType, LocalDateTime createdDate, List<PhotoEntity> photo,String status,Boolean isSave){
         return SetDataToProductResponse(id, title, price, discountValus, discountType, createdDate, photo, status, isSave, null, null);
@@ -46,8 +45,8 @@ public class ProductServiceImp implements ProductService {
     public ProductResponse SetDataToProductResponse(Long id, String title, Double price,Double discountValus, Boolean discountType, LocalDateTime createdDate, List<PhotoEntity> photo,String status,Boolean isSave, Long sellerId, String sellerName){
         Double safeDiscount = discountValus != null ? discountValus : 0.0;
         Boolean safeType = discountType != null ? discountType : Boolean.FALSE;
-        Double totalAmount;
-        if (Boolean.TRUE.equals(safeType)) {
+        double totalAmount;
+        if (safeType) {
             totalAmount = price - (price * (safeDiscount / 100));
         } else {
             totalAmount = price - safeDiscount;
@@ -101,8 +100,7 @@ public class ProductServiceImp implements ProductService {
         if(productRepository.findById(productId).isEmpty()){
             throw new NotFoundExceptionHandler("No record!");
         }
-       Optional<ProductEntity> product = productRepository.findById(productId);
-        return product;
+        return productRepository.findById(productId);
     }
 
     @Override
@@ -164,20 +162,20 @@ public class ProductServiceImp implements ProductService {
             throw new NotFoundExceptionHandler("Category not found");
         }
         if(productRequest.getTitle()==null||productRequest.getTitle().equals("")||productRequest.getTitle().equals("string")){
-            throw new FieldBlankExceptionHandler("Title cannot blank!");
+            throw new FieldEmptyExceptionHandler("Title cannot blank!");
         }
         if(productRequest.getPrice()==null||productRequest.getPrice()== 0 || productRequest.getPrice()< 0 || productRequest.getPrice() > 100000000000000.0 ){
-            throw new FieldBlankExceptionHandler("Price is not correct!");
+            throw new FieldEmptyExceptionHandler("Price is not correct!");
         }
         // Default missing optional fields so we don't NPE on auto-unbox.
         Double discountValues = productRequest.getDiscountValues() != null ? productRequest.getDiscountValues() : 0.0;
         Boolean discountType = productRequest.getDiscountType() != null ? productRequest.getDiscountType() : Boolean.FALSE;
         if (discountValues < 0 || discountValues >= 100.0){
-            throw new FieldBlankExceptionHandler("Discount is not correct!");
+            throw new FieldEmptyExceptionHandler("Discount is not correct!");
         }
 
         if (productRequest.getPhoto() == null || productRequest.getPhoto().isEmpty()){
-            throw new FieldBlankExceptionHandler("photo cannot blank!");
+            throw new FieldEmptyExceptionHandler("photo cannot blank!");
         }
         CategoryEntity category = categoryRepository.getByCategoryName(categoryName);
         if(userRepository.findById(id).isEmpty()){
@@ -199,14 +197,13 @@ public class ProductServiceImp implements ProductService {
         productEntity.setStatus("Selling");
         productEntity.setDiscountValues(discountValues);
         productEntity.setDiscountType(discountType);
-        productEntity.setCodition(productRequest.getCodition());
+        productEntity.setCodition(productRequest.getCondition());
         productEntity.setBrand(productRequest.getBrand());
         productEntity.setModel(productRequest.getModel());
         productEntity.setColor(productRequest.getColor());
         productEntity.setYear(productRequest.getYear());
         productEntity.setSize(productRequest.getSize());
         productEntity.setType(productRequest.getType());
-//        productEntity.setPhoto(productRequest.getPhoto());
         productEntity.setIsHide(false);
         productEntity.setCreatedDate(LocalDateTime.now());
         productEntity.setTotalAmount(totalAmount);
@@ -256,8 +253,7 @@ public class ProductServiceImp implements ProductService {
         List<ProductEntity> productEntities = new ArrayList<>();
         List<ProductResponse> productResponses = new ArrayList<>();
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-//       if (!(productRepository.findAllByUser_Id(userId,pageRequest).isEmpty())) {
-        if(productRepository.findAllByUser_Id(userId, pageRequest).isEmpty() && purchaseRpository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest).isEmpty()){
+        if(productRepository.findAllByUser_Id(userId, pageRequest).isEmpty() && purchaseRepository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest).isEmpty()){
             throw new NotFoundExceptionHandler("No record");
         }
            productEntities = productRepository.findAllByUser_Id(userId, pageRequest);
@@ -286,7 +282,7 @@ public class ProductServiceImp implements ProductService {
                }
 
            }
-         List<PurchaseDetailEntity>  purchaseDetailEntities = purchaseRpository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest);
+         List<PurchaseDetailEntity>  purchaseDetailEntities = purchaseRepository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest);
            for (PurchaseDetailEntity product : purchaseDetailEntities) {
                ProductResponse productResponse = new ProductResponse();
                if (product.getProduct().getStatus().equals("Purchased")){
@@ -326,10 +322,10 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<ProductResponse> getAllItemPurchased(Integer userId,Integer pageNumber,Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        if(purchaseRpository.findAll().isEmpty()){
+        if(purchaseRepository.findAll().isEmpty()){
             throw new FieldEmptyExceptionHandler("No record");
         }
-        List<PurchaseDetailEntity> purchaseDetail = purchaseRpository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest);
+        List<PurchaseDetailEntity> purchaseDetail = purchaseRepository.findByUserIdOrderByCreatedDateDesc(userId,pageRequest);
         List<ProductResponse> productResponses = new ArrayList<>();
         for (PurchaseDetailEntity purchase:purchaseDetail) {
             ProductResponse productResponse = new ProductResponse();
@@ -424,7 +420,7 @@ public class ProductServiceImp implements ProductService {
         int size = 0;
         if(condition.equals("currentUser")){
             size = productRepository.findAllByUser_Id(userId).size();
-            List<PurchaseDetailEntity> purchaseDetailEntities = purchaseRpository.findAllByUserId(userId);
+            List<PurchaseDetailEntity> purchaseDetailEntities = purchaseRepository.findAllByUserId(userId);
             for (PurchaseDetailEntity purchaseDetail:purchaseDetailEntities) {
                 if (purchaseDetail.getProduct().getStatus().equals("Purchased")) {
                     size +=1 ;
@@ -434,7 +430,7 @@ public class ProductServiceImp implements ProductService {
         }else if(condition.equals("selling")){
             return productRepository.findAllByStatusAndUser_Id("Selling",userId).size();
         }else if (condition.equals("purchase")){
-            List<PurchaseDetailEntity> purchaseDetailEntities = purchaseRpository.findAllByUserId(userId);
+            List<PurchaseDetailEntity> purchaseDetailEntities = purchaseRepository.findAllByUserId(userId);
             for (PurchaseDetailEntity purchaseDetail:purchaseDetailEntities) {
                 if (purchaseDetail.getProduct().getStatus().equals("Purchased")) {
                     size +=1 ;

@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Response DTO for products shown to the buyer side of the marketplace.
- *
+ * <p>
  * Two constructors exist:
  *   - 8-arg legacy: kept for existing call sites that don't have seller info
  *     handy (sellerId / sellerName default to null in that path).

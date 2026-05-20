@@ -9,7 +9,7 @@ import com.example.wecommerce_api.payload.Receipt.ReceiptResponse;
 import com.example.wecommerce_api.repository.Address.AddressRepository;
 import com.example.wecommerce_api.repository.Notification.NotificationRepository;
 import com.example.wecommerce_api.repository.Product.ProductRepository;
-import com.example.wecommerce_api.repository.Purchase.PurchaseRpository;
+import com.example.wecommerce_api.repository.Purchase.PurchaseRepository;
 import com.example.wecommerce_api.repository.Receipt.ReceiptRepository;
 import com.example.wecommerce_api.repository.User.UserRepository;
 import com.example.wecommerce_api.service.Notification.NotificationServiceImp;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class PurchaseServiceImp implements PurchaseService{
-    private final PurchaseRpository purchaseRpository;
+    private final PurchaseRepository purchaseRpository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final AddressRepository addressRepository;
@@ -61,9 +61,9 @@ public class PurchaseServiceImp implements PurchaseService{
         purchaseDetail.setRemark(purchaseRequest.getRemark());
         purchaseDetail.setCreatedDate(LocalDateTime.now());
         purchaseDetail = purchaseRpository.save(purchaseDetail);
-        RecieptEntity reciept = new RecieptEntity();
+        ReceiptEntity reciept = new ReceiptEntity();
         reciept.setPurchase(purchaseDetail);
-        reciept.setReference(purchaseRequest.getRefernce());
+        reciept.setReference(purchaseRequest.getReference());
         reciept.setPaidBy(purchaseRequest.getPaidBy());
         reciept.setPaidDate(LocalDateTime.now());
         reciept = receiptRepository.save(reciept);
