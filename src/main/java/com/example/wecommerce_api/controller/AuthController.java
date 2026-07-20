@@ -26,7 +26,7 @@ public class AuthController {
     }
     @PostMapping("/loginPhoneNumber")
     public BaseResponse loginByPhoneNumber(@Valid @RequestBody PhoneLoginRequest request) throws Exception {
-        return service.LoginByPhoneNumber(request.getPhoneNumber());
+        return service.LoginByPhoneNumber(request.getIdentifier(), request.getPassword());
     }
 
     @PostMapping("/refresh-token")

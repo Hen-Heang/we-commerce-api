@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 @Service
@@ -46,7 +47,7 @@ public class AuthenticationService {
                 .profilePhoto(request.getPhotoProfile())
                 .googleLink(request.getGoogleLink())
                 .maplink(request.getMapLink())
-                .role(request.getRole() != null ? request.getRole() : Role.USER)
+                .role(Role.USER)
                 .build();
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(savedUser);
@@ -61,10 +62,18 @@ public class AuthenticationService {
                 .build();
     }
 
-    public BaseResponse LoginByPhoneNumber(String phoneNumber) throws Exception {
-        var user = userRepository.findByPhoneNumber(phoneNumber);
+    // Name kept for compatibility with the existing /auth/loginPhoneNumber
+    // path, but `identifier` now accepts a phone number or an email.
+    public BaseResponse LoginByPhoneNumber(String identifier, String password) throws Exception {
+        // identifier may be a phone number or an email address — try phone first.
+        var user = userRepository.findByPhoneNumber(identifier);
         if (user == null) {
-            throw new Exception("User not found with phone number: " + phoneNumber);
+            user = userRepository.findByEmail(identifier).orElse(null);
+        }
+        // Same generic message for "no such user" and "wrong password" so the
+        // response can't be used to enumerate which phone numbers/emails are registered.
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new AuthenticationException("Incorrect phone number/email or password");
         }
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
