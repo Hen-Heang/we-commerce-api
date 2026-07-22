@@ -21,7 +21,7 @@ public class AuthController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public BaseResponse register(@RequestBody RegisterRequest request) throws Exception{
+    public BaseResponse register(@RequestBody @Valid RegisterRequest request) throws Exception{
         return service.register(request);
     }
     @PostMapping("/loginPhoneNumber")

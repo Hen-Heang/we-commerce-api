@@ -6,6 +6,7 @@ import com.example.wecommerce_api.response.ApiResponse;
 import com.example.wecommerce_api.service.Product.ProductService;
 import com.example.wecommerce_api.service.Purchase.PurchaseService;
 import com.example.wecommerce_api.service.Receipt.ReceiptService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PurchaseController {
 
 
     @PostMapping
-    public ResponseEntity<?> Addpurchase(@RequestBody PurchaseRequest purchaseRequest) {
+    public ResponseEntity<?> Purchase(@RequestBody @Valid PurchaseRequest purchaseRequest) {
         return ResponseEntity.ok(new ApiResponse<>(
                 purchaseService.addPurchase(purchaseRequest),
                 "OK",
